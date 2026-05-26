@@ -1,14 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabase';
 
+// ==========================================
+// 1. OBTENER IMÁGENES (GET)
+// ==========================================
 export async function GET(request: NextRequest) {
   try {
     const supabase = createServerSupabaseClient();
     if (!supabase) {
-      return NextResponse.json([]);
+      return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
     }
 
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = request.nextUrl;
     const search = searchParams.get('search') || '';
 
     let query = supabase
@@ -33,7 +36,10 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: Request) {
+// ==========================================
+// 2. CREAR IMAGEN (POST)
+// ==========================================
+export async function POST(request: NextRequest) {
   try {
     const supabase = createServerSupabaseClient();
     if (!supabase) {
@@ -70,7 +76,10 @@ export async function POST(request: Request) {
   }
 }
 
-export async function PUT(request: Request) {
+// ==========================================
+// 3. ACTUALIZAR IMAGEN (PUT)
+// ==========================================
+export async function PUT(request: NextRequest) {
   try {
     const supabase = createServerSupabaseClient();
     if (!supabase) {
@@ -112,14 +121,17 @@ export async function PUT(request: Request) {
   }
 }
 
-export async function DELETE(request: Request) {
+// ==========================================
+// 4. ELIMINAR IMAGEN (DELETE)
+// ==========================================
+export async function DELETE(request: NextRequest) {
   try {
     const supabase = createServerSupabaseClient();
     if (!supabase) {
       return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
     }
 
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = request.nextUrl;
     const id = searchParams.get('id');
 
     if (!id) {
